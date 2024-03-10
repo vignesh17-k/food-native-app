@@ -1,13 +1,13 @@
 {
   "expo": {
     "name": "eatme",
-    "slug": "eatme",
+    "slug": "eat-me-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/splash/ios/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -15,16 +15,25 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vignesh12.eatmeapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.vignesh12.eatmeapp"
     },
+    "scheme": "eat-me-app",
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2b8c4a67-e5f6-45ff-a231-ffb866c1bd6e"
+      }
+    },
+    "owner": "vignesh12"
   }
 }
