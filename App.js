@@ -3,8 +3,8 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import { NativeBaseProvider, useToast } from "native-base";
 import MainApp from "./src/main";
-import * as Updates from "expo-updates";
 import { NavigationContainer } from "@react-navigation/native";
+import * as Updates from "expo-updates";
 
 
 export default function App() {
