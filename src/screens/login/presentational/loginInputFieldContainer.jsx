@@ -30,8 +30,8 @@ const loginInputFieldContainer = ({ navigation }) => {
         handle_create_new_user(email, password);
         break;
       case "login":
-        handle_existing_user(email, password);
         set_loading(true);
+        handle_existing_user(email, password);
         break;
     }
   });

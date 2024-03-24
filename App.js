@@ -5,10 +5,9 @@ import { NativeBaseProvider, useToast } from "native-base";
 import MainApp from "./src/main";
 import { NavigationContainer } from "@react-navigation/native";
 import * as Updates from "expo-updates";
-
+import DeepLinkHandler from "./src/components/DeepLinking";
 
 export default function App() {
-
   const toast = useToast();
 
   async function on_fetch_update_async() {
@@ -21,7 +20,7 @@ export default function App() {
       }
     } catch (error) {
       toast.show({
-        title:`Error fetching latest Expo update: ${error}`,
+        title: `Error fetching latest Expo update: ${error}`,
         placement: "top",
       });
     }
@@ -36,6 +35,7 @@ export default function App() {
       <NativeBaseProvider>
         <NavigationContainer>
           <MainApp />
+          <DeepLinkHandler />
         </NavigationContainer>
       </NativeBaseProvider>
     </Provider>

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "eatme",
+    "name": "Eat Me",
     "slug": "eat-me-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,7 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/splash/ios/logo.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.vignesh12.eatmeapp"

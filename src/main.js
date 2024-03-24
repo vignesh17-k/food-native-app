@@ -23,7 +23,6 @@ const MainApp = () => {
     set_loading(true);
     try {
       const { data: session, error } = await supabase.auth.getSession();
-
       if (error) {
         toast.show({
           title: error?.message,

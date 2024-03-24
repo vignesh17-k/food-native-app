@@ -16,6 +16,7 @@ import { SIZES } from "../../../../constants";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 
+
 WebBrowser.maybeCompleteAuthSession();
 
 const Login = ({ navigation }) => {
@@ -24,9 +25,9 @@ const Login = ({ navigation }) => {
       "838737370974-07cp7i8hl7c44fm4dpmke8ufmc2bd72o.apps.googleusercontent.com",
     webClientId:
       "838737370974-5q6c3e184jr0m035a98l3cv2896jq6o7.apps.googleusercontent.com",
-    androidClientId:'838737370974-3g2r3ghdas0minefh3ggq3r87blb1m78.apps.googleusercontent.com',
+    androidClientId:
+      "838737370974-3g2r3ghdas0minefh3ggq3r87blb1m78.apps.googleusercontent.com",
   });
-
 
   return (
     <React.Fragment>
@@ -35,7 +36,7 @@ const Login = ({ navigation }) => {
       >
         <KeyboardAvoidingView
           style={styles.container}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
           keyboardVerticalOffset={0}
         >
           <ScrollView
@@ -47,7 +48,7 @@ const Login = ({ navigation }) => {
           </ScrollView>
         </KeyboardAvoidingView>
 
-        <TouchableOpacity onPress={()=>promptAysnc()}>
+        <TouchableOpacity onPress={() => promptAysnc()}>
           <View style={{ ...styles.googleButton }}>
             <Image
               source={google_icon}
