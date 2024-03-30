@@ -39,7 +39,7 @@ const MainApp = () => {
 
   useEffect(() => {
     fetch_session();
-    const subscription = supabase.auth.onAuthStateChange(handle_session_change);
+    const subscription:any = supabase.auth.onAuthStateChange(handle_session_change);
     return () => {
       subscription.unsubscribe();
     };

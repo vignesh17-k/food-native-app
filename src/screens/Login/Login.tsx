@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect } from "react";
 import LoginContainer from "../Login/components/loginContainer";
 import LoginInputFieldContainer from "../Login/components/loginInputFieldContainer";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,24 +9,49 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { Image, Text, View } from "native-base";
+import { Image, Text, View, useToast } from "native-base";
 import { SIZES } from "../../../constants";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 import ImageLinks from "../../../assets/ImageLink";
-
+import { supabase } from "../../../supabase.config";
 
 WebBrowser.maybeCompleteAuthSession();
 
 const Login = ({ navigation }) => {
-  const [request, response, promptAysnc] = Google.useAuthRequest({
+  const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId:
-      "838737370974-07cp7i8hl7c44fm4dpmke8ufmc2bd72o.apps.googleusercontent.com",
-    webClientId:
-      "838737370974-5q6c3e184jr0m035a98l3cv2896jq6o7.apps.googleusercontent.com",
+      "256385423646-ce03he8h22l3vdi69okag85ivegav5h2.apps.googleusercontent.com",
     androidClientId:
-      "838737370974-3g2r3ghdas0minefh3ggq3r87blb1m78.apps.googleusercontent.com",
+      "256385423646-r4h33vvbsq7vfp3p4h628dt0ppt47ta3.apps.googleusercontent.com",
+      webClientId:'256385423646-9i5235emvqtjbg012oq00724b28vbcmm.apps.googleusercontent.com'
   });
+  const toast = useToast();
+
+  const handle_signin_with_google = async (user_info: any) => {
+    const params = user_info?.params;
+    if (params.id_token) {
+      const { data, error } = await supabase.auth.signInWithIdToken({
+        provider: "google",
+        token: params.id_token,
+      });
+
+      if (error) {
+        toast.show({
+          title: error?.message,
+          placement: "top",
+          backgroundColor: "red.800",
+        });
+        return;
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (response) {
+      handle_signin_with_google(response);
+    }
+  }, [response]);
 
   return (
     <React.Fragment>
@@ -48,7 +72,7 @@ const Login = ({ navigation }) => {
           </ScrollView>
         </KeyboardAvoidingView>
 
-        <TouchableOpacity onPress={() => promptAysnc()}>
+        <TouchableOpacity onPress={() => promptAsync()}>
           <View style={{ ...styles.googleButton }}>
             <Image
               source={ImageLinks?.google_icon}
