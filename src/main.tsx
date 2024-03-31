@@ -27,6 +27,7 @@ const MainApp = () => {
         toast.show({
           title: error?.message,
           placement: "top",
+          background:'red.800'
         });
       }
       dispatch(setSession(session));

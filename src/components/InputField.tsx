@@ -1,5 +1,4 @@
 import React from "react";
-
 import { StyleSheet, TextInput, View, Text } from "react-native";
 import { SIZES } from "../../constants";
 import { Controller } from "react-hook-form";
@@ -42,7 +41,7 @@ const InputField = ({
                 borderRadius: 10,
                 borderWidth: 0.6,
                 borderColor: "transparent",
-                fontSize: 18,
+                fontSize: 16,
                 ...styles.inputFieldStyle,
               }}
             />
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
   textLabel: {
     marginVertical: SIZES.height * 0.01,
     opacity: 0.5,
-    fontWeight: 500,
+    fontWeight: '500',
     fontSize: 16,
   },
 });
