@@ -8,7 +8,7 @@ import apply_validations from "../../utils/rules";
 import { Controller } from "react-hook-form";
 
 interface Props {
-  style: any;
+  style?: any;
   name: string;
   validations: any;
   label: string;

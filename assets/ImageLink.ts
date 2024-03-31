@@ -5,6 +5,7 @@ import background_2 from "./images/background_02.png";
 import image_1 from "./images/favourite_food.png";
 import image_2 from "./images/hot_delivery.png";
 import image_3 from "./images/great_food.png";
+import back_arrow from "./icons/back_arrow.png";
 
 const ImageLinks = {
     google_icon,
@@ -13,7 +14,8 @@ const ImageLinks = {
     background_2,
     image_1,
     image_2,
-    image_3
+    image_3,
+    back_arrow
 };
 
 export default ImageLinks;

@@ -3,22 +3,36 @@ import { View, Image, Text, useToast } from "native-base";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES } from "../../../constants";
-import { Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet, TouchableOpacity } from "react-native";
 import Button from "../../components/Button";
 import InputField from "../../components/InputField";
 import { useForm } from "react-hook-form";
 import { supabase } from "../../../supabase.config";
 import ImageLinks from "../../../assets/ImageLink";
+import { useNavigation } from "@react-navigation/native";
+import { makeRedirectUri } from "expo-auth-session";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function ForgotPassword() {
   const [loading, set_loading] = useState(false);
   const toast = useToast();
   const { control, handleSubmit } = useForm();
+  const navigation = useNavigation();
+  const redirect_to = makeRedirectUri();
+
+  const store_data = async (key: string, value: any) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+      console.log("Data stored successfully");
+    } catch (error) {
+      console.error("Error storing data:", error);
+    }
+  };
 
   const handle_send_reset_password = async (payload) => {
     set_loading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(payload, {
-      redirectTo: "",
+      redirectTo: `${redirect_to}resetPassword`,
     });
     set_loading(false);
     if (error) {
@@ -30,6 +44,7 @@ function ForgotPassword() {
       return;
     }
 
+    store_data("user_data", JSON.stringify({ email: payload }));
     toast.show({
       title: "Email sent",
       placement: "top",
@@ -44,18 +59,38 @@ function ForgotPassword() {
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>
-      <View style={styles.container} bg={'red'}>
-        <Image
-          source={ImageLinks?.logo}
-          style={{
-            resizeMode: "contain",
-            width: SIZES.width * 0.5,
-            marginTop: 20,
-            height: 100,
-          }}
-          alt="logo"
-        />
+      <View style={styles.img_container}>
+        <View style={{ width: "25%" }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Image
+              source={ImageLinks?.back_arrow}
+              style={{
+                resizeMode: "contain",
+                height: SIZES.height * 0.04,
+              }}
+              alt="logo"
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={{ width: "75%" }}>
+          <Image
+            source={ImageLinks?.logo}
+            style={{
+              resizeMode: "contain",
+              width: SIZES.width * 0.5,
+              marginTop: 20,
+              height: 100,
+            }}
+            alt="logo"
+          />
+        </View>
+      </View>
 
+      <View style={styles.container}>
         <View>
           <Text style={styles.title}>Password Recovery</Text>
           <Text style={styles.text}>
@@ -99,8 +134,14 @@ export default ForgotPassword;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    justifyContent: "center",
     gap: 20,
+    flex: 1,
+  },
+  img_container: {
+    alignItems: "center",
+    flexDirection: "row",
+    paddingHorizontal: SIZES.width * 0.02,
+    marginBottom: 10,
   },
   title: {
     fontSize: 22,

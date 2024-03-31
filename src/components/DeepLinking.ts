@@ -3,32 +3,41 @@ import { Linking, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useToast } from "native-base";
 import * as QueryParams from "expo-auth-session/build/QueryParams";
+import { supabase } from "../../supabase.config";
 
 const DeepLinkHandler = () => {
-  const navigation:any = useNavigation();
+  const navigation: any = useNavigation();
   const toast = useToast();
   const linking: any = Linking
+
+  const handle_error = () => {
+    toast.show({
+      title: "Invalid access token",
+      placement: "top",
+      backgroundColor: "red.800",
+    });
+  }
+
+  const refresh_session_and_navigate = async (refresh_token: any) => {
+    const { error } = await supabase.auth.refreshSession({ refresh_token });
+    if (error) {
+      handle_error();
+      return;
+    }
+    navigation.navigate("resetPassword");
+  }
 
   const handle_deep_link = async (url: string) => {
     try {
       const { params } = QueryParams.getQueryParams(url);
-      const { access_token } = params;
-      if (access_token && url?.startsWith("eat-me-app://resetPassword")) {
-        // navigate to the resetPassword screen
-        navigation.navigate("resetPassword");
+      const { refresh_token } = params;
+      if (refresh_token && url?.startsWith("eat-me-app://resetPassword")) {
+        await refresh_session_and_navigate(refresh_token)
       } else {
-        toast.show({
-          title: "Invalid access token",
-          placement: "top",
-          backgroundColor: "red.800",
-        });
+        handle_error()
       }
     } catch {
-      toast.show({
-        title: "invalid access token",
-        placement: "top",
-        backgroundColor: "red.800",
-      });
+      handle_error()
     }
   };
 
