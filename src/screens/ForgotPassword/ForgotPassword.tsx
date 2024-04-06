@@ -1,23 +1,21 @@
 /* eslint-disable no-unused-vars */
-import { View, Image, Text, useToast } from "native-base";
+import { View,  useToast } from "native-base";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES } from "../../../constants";
-import { Platform, StyleSheet, TouchableOpacity } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import Button from "../../components/Button";
 import InputField from "../../components/InputField";
 import { useForm } from "react-hook-form";
 import { supabase } from "../../../supabase.config";
-import ImageLinks from "../../../assets/ImageLink";
-import { useNavigation } from "@react-navigation/native";
 import { makeRedirectUri } from "expo-auth-session";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LogoHeader from "../../components/LogoHeader";
 
 function ForgotPassword() {
   const [loading, set_loading] = useState(false);
   const toast = useToast();
   const { control, handleSubmit } = useForm();
-  const navigation = useNavigation();
   const redirect_to = makeRedirectUri();
 
   const store_data = async (key: string, value: any) => {
@@ -59,45 +57,13 @@ function ForgotPassword() {
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>
-      <View style={styles.img_container}>
-        <View style={{ width: "25%" }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            <Image
-              source={ImageLinks?.back_arrow}
-              style={{
-                resizeMode: "contain",
-                height: SIZES.height * 0.04,
-              }}
-              alt="logo"
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={{ width: "75%" }}>
-          <Image
-            source={ImageLinks?.logo}
-            style={{
-              resizeMode: "contain",
-              width: SIZES.width * 0.5,
-              marginTop: 20,
-              height: 100,
-            }}
-            alt="logo"
-          />
-        </View>
-      </View>
+      <LogoHeader
+        allow_back={true}
+        title="Password Recovery"
+        sub_title="Please enter your email address to recover your password"
+      />
 
       <View style={styles.container}>
-        <View>
-          <Text style={styles.title}>Password Recovery</Text>
-          <Text style={styles.text}>
-            Please enter your email address to recover your password
-          </Text>
-        </View>
-
         <View style={styles.textContainer}>
           <InputField
             name="email"

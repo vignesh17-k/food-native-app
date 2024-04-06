@@ -5,12 +5,14 @@ import Login from "./screens/Login/Login";
 import Home from "./screens//Home/Home";
 import ForgotPassword from "./screens/ForgotPassword/ForgotPassword";
 import ResetPassword from "./screens/ResetPassword/ResetPassword";
+import PhoneLogin from "./screens/PhoneLogin/PhoneLogin";
 import { useSelector } from "react-redux";
+import Otp from "./screens/OtpScreen/Otp";
 
 const Stack = createNativeStackNavigator();
 
 const Routes = () => {
-  const user_data = useSelector((state:any) => state?.user?.session);
+  const user_data = useSelector((state: any) => state?.user?.session);
 
   return (
     <Stack.Navigator
@@ -51,6 +53,22 @@ const Routes = () => {
       <Stack.Screen
         name="home"
         component={Home}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="phoneLogin"
+        component={PhoneLogin}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="otpScreen"
+        component={Otp}
         options={{
           headerShown: false,
         }}

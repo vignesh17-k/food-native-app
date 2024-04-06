@@ -15,6 +15,10 @@ import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 import ImageLinks from "../../../assets/ImageLink";
 import { supabase } from "../../../supabase.config";
+import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import LogoHeader from "../../components/LogoHeader";
+import { Messages } from "../../../utils/text";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -24,16 +28,19 @@ const Login = ({ navigation }) => {
       "256385423646-ce03he8h22l3vdi69okag85ivegav5h2.apps.googleusercontent.com",
     androidClientId:
       "256385423646-r4h33vvbsq7vfp3p4h628dt0ppt47ta3.apps.googleusercontent.com",
-      webClientId:'256385423646-9i5235emvqtjbg012oq00724b28vbcmm.apps.googleusercontent.com'
+    webClientId:
+      "256385423646-9i5235emvqtjbg012oq00724b28vbcmm.apps.googleusercontent.com",
   });
   const toast = useToast();
+  const login_type = useSelector((state: any) => state?.login?.loginType);
+  const navigate: any = useNavigation();
 
   const handle_signin_with_google = async (user_info: any) => {
     const params = user_info?.params;
-    if (params.id_token) {
+    if (params?.id_token) {
       const { data, error } = await supabase.auth.signInWithIdToken({
         provider: "google",
-        token: params.id_token,
+        token: params?.id_token,
       });
 
       if (error) {
@@ -67,10 +74,30 @@ const Login = ({ navigation }) => {
             contentContainerStyle={styles.contentContainer}
             keyboardShouldPersistTaps="handled"
           >
-            <LoginContainer />
+            <LogoHeader
+              allow_back={false}
+              title={
+                login_type === "signup"
+                  ? Messages.signUpTitle
+                  : Messages.loginTitle
+              }
+              sub_title={
+                login_type === "signup"
+                  ? Messages.signUpSubTitle
+                  : Messages.loginSubTitle
+              }
+            />
             <LoginInputFieldContainer navigation={navigation} />
           </ScrollView>
         </KeyboardAvoidingView>
+
+        {login_type === "login" && (
+          <TouchableOpacity onPress={() => navigate.navigate("phoneLogin")}>
+            <View style={styles.phoneLogin}>
+              <Text color="white">Login With Phone Number</Text>
+            </View>
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity onPress={() => promptAsync()}>
           <View style={{ ...styles.googleButton }}>
@@ -97,6 +124,17 @@ const styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 0.5,
     justifyContent: "center",
+  },
+  phoneLogin: {
+    borderRadius: 10,
+    padding: 15,
+    backgroundColor: "rgba(0,0,0,0.8)",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
+    marginHorizontal: SIZES.width * 0.05,
+    marginBottom: 10,
   },
   googleButton: {
     borderRadius: 10,

@@ -15,6 +15,7 @@ import _ from "lodash";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../../store/slices/LoginSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LogoHeader from "../../components/LogoHeader";
 
 function ResetPassword() {
   const [loading, set_loading] = useState(false);
@@ -88,44 +89,19 @@ function ResetPassword() {
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>
-      <View style={styles.img_container}>
-        <View style={{ width: "25%" }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            <Image
-              source={ImageLinks?.back_arrow}
-              style={{
-                resizeMode: "contain",
-                height: SIZES.height * 0.04,
-              }}
-              alt="logo"
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={{ width: "75%" }}>
-          <Image
-            source={ImageLinks?.logo}
-            style={{
-              resizeMode: "contain",
-              width: SIZES.width * 0.5,
-              marginTop: 20,
-              height: 100,
-            }}
-            alt="logo"
-          />
-        </View>
-      </View>
+
+      <LogoHeader
+        allow_back={true}
+        title={"Create new password"}
+        sub_title={
+          "Your new password must be different from previous used passwords"
+        }
+        style={{
+          marginBottom: 15,
+        }}
+      />
 
       <View style={styles.container}>
-        <View>
-          <Text style={styles.title}>Create new password</Text>
-          <Text style={styles.text}>
-            Your new password must be different from previous used passwords
-          </Text>
-        </View>
 
         <View style={styles.textContainer}>
           <Password
