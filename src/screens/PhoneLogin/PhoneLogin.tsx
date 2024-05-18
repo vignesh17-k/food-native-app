@@ -9,6 +9,7 @@ import Button from "../../components/Button";
 import { supabase } from "../../../supabase.config";
 import { useToast } from "native-base";
 import { useNavigation } from "@react-navigation/native";
+import utils from "../../../utils/utils";
 
 const PhoneLogin = () => {
   const { control, handleSubmit, setValue } = useForm();
@@ -46,6 +47,10 @@ const PhoneLogin = () => {
       placement: "top",
       backgroundColor: "green.800",
     });
+    await utils.store_data(
+      "user_data",
+      JSON.stringify({ phone_number: phone_number })
+    );
     navigate.navigate("otpScreen");
   };
 

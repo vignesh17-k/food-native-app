@@ -1,21 +1,18 @@
-/* eslint-disable no-unused-vars */
-import { View, Image, Text, useToast } from "native-base";
+import { View, useToast } from "native-base";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES } from "../../../constants";
-import { Platform, StyleSheet, TouchableOpacity } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import Button from "../../components/Button";
-import InputField from "../../components/InputField";
 import { useForm } from "react-hook-form";
 import { supabase } from "../../../supabase.config";
-import ImageLinks from "../../../assets/ImageLink";
 import { useNavigation } from "@react-navigation/native";
 import Password from "../../components/Password";
 import _ from "lodash";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../../store/slices/LoginSlice";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import LogoHeader from "../../components/LogoHeader";
+import utils from "../../../utils/utils";
 
 function ResetPassword() {
   const [loading, set_loading] = useState(false);
@@ -71,25 +68,17 @@ function ResetPassword() {
     }
   });
 
-  const retrieve_data = async (key: string) => {
-    try {
-      const value = await AsyncStorage.getItem(key);
-      if (value !== null) {
-        let data = JSON.parse(value);
-        set_user_data(data);
-      }
-    } catch (error) {
-      console.error("Error retrieving data:", error);
-    }
+  const handle_get_data = async () => {
+    let data = await utils.retrieve_data("user_data");
+    data && set_user_data(data);
   };
 
   useEffect(() => {
-    retrieve_data("user_data");
+    handle_get_data();
   }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>
-
       <LogoHeader
         allow_back={true}
         title={"Create new password"}
@@ -102,7 +91,6 @@ function ResetPassword() {
       />
 
       <View style={styles.container}>
-
         <View style={styles.textContainer}>
           <Password
             name="new_password"

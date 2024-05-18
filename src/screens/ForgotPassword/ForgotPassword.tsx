@@ -9,8 +9,8 @@ import InputField from "../../components/InputField";
 import { useForm } from "react-hook-form";
 import { supabase } from "../../../supabase.config";
 import { makeRedirectUri } from "expo-auth-session";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import LogoHeader from "../../components/LogoHeader";
+import utils from "../../../utils/utils";
 
 function ForgotPassword() {
   const [loading, set_loading] = useState(false);
@@ -18,16 +18,8 @@ function ForgotPassword() {
   const { control, handleSubmit } = useForm();
   const redirect_to = makeRedirectUri();
 
-  const store_data = async (key: string, value: any) => {
-    try {
-      await AsyncStorage.setItem(key, value);
-      console.log("Data stored successfully");
-    } catch (error) {
-      console.error("Error storing data:", error);
-    }
-  };
 
-  const handle_send_reset_password = async (payload) => {
+  const handle_send_reset_password = async (payload:any) => {
     set_loading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(payload, {
       redirectTo: `${redirect_to}resetPassword`,
@@ -41,8 +33,7 @@ function ForgotPassword() {
       });
       return;
     }
-
-    store_data("user_data", JSON.stringify({ email: payload }));
+    await utils.store_data("user_data", JSON.stringify({ email: payload }));
     toast.show({
       title: "Email sent",
       placement: "top",
