@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import LoginContainer from "../Login/components/loginContainer";
 import LoginInputFieldContainer from "../Login/components/loginInputFieldContainer";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -61,7 +60,6 @@ const Login = ({ navigation }) => {
   }, [response]);
 
   return (
-    <React.Fragment>
       <SafeAreaView
         style={{ flex: 1, marginVertical: Platform.OS === "android" && 20 }}
       >
@@ -113,7 +111,6 @@ const Login = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       </SafeAreaView>
-    </React.Fragment>
   );
 };
 

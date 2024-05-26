@@ -32,6 +32,7 @@ const PhoneLogin = () => {
       phone: phone_number,
     });
 
+
     set_loading(false);
     if (error) {
       toast.show({
@@ -59,7 +60,7 @@ const PhoneLogin = () => {
       <LogoHeader
         allow_back={true}
         title={"Log In with Your Phone Number"}
-        sub_title={"We'll send you a verification code to"}
+        sub_title={"We'll send you a verification code"}
       />
 
       <View style={styles.container}>
@@ -85,7 +86,7 @@ const PhoneLogin = () => {
         }}
       >
         <Button
-          text={"Send Otp"}
+          text={"Verify"}
           onClick={onSubmit}
           loading={loading}
           type="primary"

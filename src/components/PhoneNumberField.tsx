@@ -80,6 +80,23 @@ const PhoneNumberField = ({
                 if (text === " ") {
                   return;
                 }
+                let final_text: any = text;
+
+								if (type === 'number' && !_.isEmpty(text)) {
+									if (validations?.allow_digits) {
+										if (!/^\d+(\.\d{0,2})?$/.test(text)) {
+											return;
+										}
+									} else if (!/^\d+(\.\d{0,2})?$/.test(text)) {
+										return;
+									}
+
+									if (final_text.length > 1) {
+										final_text = text.replace(/^0+/, '');
+									}
+								}
+
+								onChange(final_text);
                 onChange(text);
               }}
               leftElement={
