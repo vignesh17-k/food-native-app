@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { View, Image, Text, useToast } from "native-base";
+import { View,  useToast } from "native-base";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES } from "../../../constants";
@@ -8,17 +8,21 @@ import Button from "../../components/Button";
 import InputField from "../../components/InputField";
 import { useForm } from "react-hook-form";
 import { supabase } from "../../../supabase.config";
-import ImageLinks from "../../../assets/ImageLink";
+import { makeRedirectUri } from "expo-auth-session";
+import LogoHeader from "../../components/LogoHeader";
+import utils from "../../../utils/utils";
 
 function ForgotPassword() {
   const [loading, set_loading] = useState(false);
   const toast = useToast();
   const { control, handleSubmit } = useForm();
+  const redirect_to = makeRedirectUri();
 
-  const handle_send_reset_password = async (payload) => {
+
+  const handle_send_reset_password = async (payload:any) => {
     set_loading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(payload, {
-      redirectTo: "",
+      redirectTo: `${redirect_to}resetPassword`,
     });
     set_loading(false);
     if (error) {
@@ -29,7 +33,7 @@ function ForgotPassword() {
       });
       return;
     }
-
+    await utils.store_data("user_data", JSON.stringify({ email: payload }));
     toast.show({
       title: "Email sent",
       placement: "top",
@@ -44,25 +48,13 @@ function ForgotPassword() {
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>
-      <View style={styles.container} bg={'red'}>
-        <Image
-          source={ImageLinks?.logo}
-          style={{
-            resizeMode: "contain",
-            width: SIZES.width * 0.5,
-            marginTop: 20,
-            height: 100,
-          }}
-          alt="logo"
-        />
+      <LogoHeader
+        allow_back={true}
+        title="Password Recovery"
+        sub_title="Please enter your email address to recover your password"
+      />
 
-        <View>
-          <Text style={styles.title}>Password Recovery</Text>
-          <Text style={styles.text}>
-            Please enter your email address to recover your password
-          </Text>
-        </View>
-
+      <View style={styles.container}>
         <View style={styles.textContainer}>
           <InputField
             name="email"
@@ -99,8 +91,14 @@ export default ForgotPassword;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    justifyContent: "center",
     gap: 20,
+    flex: 1,
+  },
+  img_container: {
+    alignItems: "center",
+    flexDirection: "row",
+    paddingHorizontal: SIZES.width * 0.02,
+    marginBottom: 10,
   },
   title: {
     fontSize: 22,

@@ -12,9 +12,10 @@ interface Props {
 	minLength: number
 	name: string
 	number: string
+	value?: any
 }
 
-const apply_validations = ({ character, required, email, label, maxLength, minLength, number, name }: Props) => {
+const apply_validations = ({ character, required, email, label, maxLength, minLength, number, name, value }: Props) => {
 	let rules: any = {
 		validate: {},
 		pattern: {},
@@ -85,6 +86,21 @@ const apply_validations = ({ character, required, email, label, maxLength, minLe
 			},
 		};
 	}
+
+
+	// if (phone && value) {
+	// 	const num = `+${value}`;
+	// 	const phone_number = parsePhoneNumber(num);
+
+	// 	rules = {
+	// 		...rules,
+	// 		validate: () => {
+	// 			if (!phone_number?.valid) {
+	// 				return 'Invalid number';
+	// 			}
+	// 		},
+	// 	};
+	// }
 
 	return rules;
 };

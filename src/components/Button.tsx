@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     backgroundColor: "rgb(237,117,80)",
-    padding: SIZES.height * 0.02,
+    padding: SIZES.height * 0.015,
     borderRadius: 10,
   },
   primaryButtonText: {

@@ -1,5 +1,5 @@
 import { View, StyleSheet, Text } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SIZES } from "../../../../constants";
 import InputField from "../../../components/InputField";
 import Password from "../../../components/Password";
@@ -11,15 +11,16 @@ import { useNavigation } from "@react-navigation/native";
 import { supabase } from "../../../../supabase.config";
 import { useForm } from "react-hook-form";
 import { useToast } from "native-base";
+import PhoneNumberField from "../../../components/PhoneNumberField";
+import _ from "lodash";
 
 const loginInputFieldContainer = ({ navigation }) => {
   const [loading, set_loading] = useState(false);
-  const navigate:any = useNavigation();
-  const loginType = useSelector((state:any) => state.login.loginType);
+  const navigate: any = useNavigation();
+  const loginType = useSelector((state: any) => state.login.loginType);
   const dispatch = useDispatch();
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, setValue, watch } = useForm();
   const toast = useToast();
-
 
   const onSubmit = handleSubmit((data) => {
     const { email, password } = data;
@@ -27,7 +28,7 @@ const loginInputFieldContainer = ({ navigation }) => {
     switch (loginType) {
       case "signup":
         set_loading(true);
-        handle_create_new_user(email, password);
+        handle_create_new_user(data);
         break;
       case "login":
         set_loading(true);
@@ -45,10 +46,12 @@ const loginInputFieldContainer = ({ navigation }) => {
     });
   };
 
-  const handle_create_new_user = async (email, password) => {
+  const handle_create_new_user = async (payload: any) => {
+    const phone_number = `${payload?.country_code}${payload?.phone_number}`;
     const { error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
+      email: payload?.email,
+      password: payload?.password,
+      phone: phone_number,
     });
 
     if (error) {
@@ -56,13 +59,14 @@ const loginInputFieldContainer = ({ navigation }) => {
       toast.show({
         title: error?.message,
         placement: "top",
+        background: "red.800",
       });
       return;
     }
     handle_navigation();
   };
 
-  const handle_existing_user = async (email, password) => {
+  const handle_existing_user = async (email: any, password: any) => {
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
@@ -73,6 +77,7 @@ const loginInputFieldContainer = ({ navigation }) => {
       toast.show({
         title: error?.message,
         placement: "top",
+        background: "red.800",
       });
       return;
     }
@@ -80,18 +85,20 @@ const loginInputFieldContainer = ({ navigation }) => {
     handle_navigation();
   };
 
+  const country_code = watch("country_code");
+
+  const handle_country_code = (code: any) => {
+    setValue("country_code", code);
+  };
+
+  useEffect(() => {
+    if (_.isEmpty(country_code)) {
+      setValue("country_code", "+1");
+    }
+  }, [country_code]);
+
   return (
     <View style={styles.text_field_container}>
-      <InputField
-        name="email"
-        label="Email"
-        validations={{
-          required: true,
-          email: true,
-        }}
-        style={{ marginBottom: SIZES.height * 0.001 }}
-        control={control}
-      />
       {loginType === "signup" && (
         <InputField
           name="username"
@@ -102,6 +109,31 @@ const loginInputFieldContainer = ({ navigation }) => {
             minLength: 3,
           }}
           control={control}
+        />
+      )}
+
+      <InputField
+        name="email"
+        label="Email"
+        validations={{
+          required: true,
+          email: true,
+        }}
+        style={{ marginBottom: SIZES.height * 0.001 }}
+        control={control}
+      />
+
+      {loginType === "signup" && (
+        <PhoneNumberField
+          name="phone_number"
+          label="Phone Number"
+          validations={{
+            required: true,
+            number: true,
+          }}
+          on_country_code_select={handle_country_code}
+          control={control}
+          type={"number"}
         />
       )}
 

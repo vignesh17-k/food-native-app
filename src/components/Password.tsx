@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Pressable } from "react-native";
-import { StyleSheet } from "react-native";
+import { View, Text, Pressable, StyleSheet } from "react-native";
 import { SIZES } from "../../constants";
 import { Icon, Input } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -8,7 +7,7 @@ import apply_validations from "../../utils/rules";
 import { Controller } from "react-hook-form";
 
 interface Props {
-  style: any;
+  style?: any;
   name: string;
   validations: any;
   label: string;
@@ -30,7 +29,7 @@ const Password = ({ style, label, control, validations, name }: Props) => {
             <Input
               onChangeText={(newText) => onChange(newText)}
               value={value}
-              fontSize={18}
+              fontSize={16}
               borderWidth={0.6}
               height={SIZES.height * 0.055}
               borderRadius={10}
