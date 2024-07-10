@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import LogoHeader from "../../components/LogoHeader";
 import { Messages } from "../../../utils/text";
+import constants from "../../../utils/constants";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -90,7 +91,7 @@ const Login = ({ navigation }) => {
         </KeyboardAvoidingView>
 
         {login_type === "login" && (
-          <TouchableOpacity onPress={() => navigate.navigate("phoneLogin")}>
+          <TouchableOpacity onPress={() => navigate.navigate(constants.RouteNames.PhoneLogin)}>
             <View style={styles.phoneLogin}>
               <Text color="white">Login With Phone Number</Text>
             </View>

@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useToast } from "native-base";
 import * as QueryParams from "expo-auth-session/build/QueryParams";
 import { supabase } from "../../supabase.config";
+import constants from "../../utils/constants";
 
 const DeepLinkHandler = () => {
   const navigation: any = useNavigation();
@@ -24,7 +25,7 @@ const DeepLinkHandler = () => {
       handle_error();
       return;
     }
-    navigation.navigate("resetPassword");
+    navigation.navigate(constants.RouteNames?.ResetPassword);
   }
 
   const handle_deep_link = async (url: string) => {

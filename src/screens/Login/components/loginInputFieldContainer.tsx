@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { useToast } from "native-base";
 import PhoneNumberField from "../../../components/PhoneNumberField";
 import _ from "lodash";
+import constants from "../../../../utils/constants";
 
 const loginInputFieldContainer = ({ navigation }) => {
   const [loading, set_loading] = useState(false);
@@ -42,7 +43,7 @@ const loginInputFieldContainer = ({ navigation }) => {
     set_loading(false);
     navigation.reset({
       index: 0,
-      routes: [{ name: "home" }],
+      routes: [{ name: constants.RouteNames?.MainApp }],
     });
   };
 
@@ -155,7 +156,7 @@ const loginInputFieldContainer = ({ navigation }) => {
       >
         <Text
           style={styles.forgot_password_style}
-          onPress={() => navigate.navigate("forgotPassword")}
+          onPress={() => navigate.navigate(constants.RouteNames.ForgotPassword)}
         >
           Forgot Password?
         </Text>

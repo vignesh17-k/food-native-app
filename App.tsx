@@ -37,8 +37,8 @@ export default function App() {
         <NavigationContainer>
           <PersistGate persistor={persistor}>
             <MainApp />
-            <DeepLinkHandler />
           </PersistGate>
+          <DeepLinkHandler />
         </NavigationContainer>
       </NativeBaseProvider>
     </Provider>
