@@ -25,7 +25,7 @@ const DeepLinkHandler = () => {
       handle_error();
       return;
     }
-    navigation.navigate(constants.RouteNames?.ResetPassword);
+    navigation.navigate('resetPassword');
   }
 
   const handle_deep_link = async (url: string) => {
