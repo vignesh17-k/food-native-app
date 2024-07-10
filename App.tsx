@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { Provider } from "react-redux";
-import { store } from "./store/store";
+import { store, persistor } from "./store/store";
 import { NativeBaseProvider, useToast } from "native-base";
 import MainApp from "./src/main";
 import { NavigationContainer } from "@react-navigation/native";
 import * as Updates from "expo-updates";
 import DeepLinkHandler from "./src/components/DeepLinking";
+import { PersistGate } from "redux-persist/integration/react";
 
 export default function App() {
   const toast = useToast();
@@ -34,8 +35,10 @@ export default function App() {
     <Provider store={store}>
       <NativeBaseProvider>
         <NavigationContainer>
-          <MainApp />
-          <DeepLinkHandler />
+          <PersistGate persistor={persistor}>
+            <MainApp />
+            <DeepLinkHandler />
+          </PersistGate>
         </NavigationContainer>
       </NativeBaseProvider>
     </Provider>
