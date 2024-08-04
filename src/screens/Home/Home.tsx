@@ -8,9 +8,10 @@ import { setLogin } from "../../../store/slices/LoginSlice";
 import { useDispatch } from "react-redux";
 import { supabase } from "../../../supabase.config";
 import { useToast } from "native-base";
+import constants from "../../../utils/constants";
 
 const Home = ({ navigation }) => {
-  const navigate:any = useNavigation();
+  const navigate: any = useNavigation();
   const dispatch = useDispatch();
   const toast = useToast();
 
@@ -27,10 +28,10 @@ const Home = ({ navigation }) => {
 
     AsyncStorage.clear();
     dispatch(setLogin(false));
-    navigate.navigate("login");
+    navigate.navigate(constants.RouteNames.Login);
     navigation.reset({
       index: 0,
-      routes: [{ name: "login" }],
+      routes: [{ name: constants.RouteNames.Login }],
     });
   };
 

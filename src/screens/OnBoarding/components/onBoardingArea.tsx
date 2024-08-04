@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ON_BOARDING_CONTANTS } from "../contants";
 import { Platform } from "react-native";
 import ImageLinks from "../../../../assets/ImageLink";
+import constants from "../../../../utils/constants";
 
 function OnBoardingArea() {
   const [tab, set_tab] = useState(0);
@@ -35,7 +36,7 @@ function OnBoardingArea() {
   };
 
   const handle_skip = () => {
-    navigate.navigate("login");
+    navigate.navigate(constants.RouteNames.Login);
   };
 
   const render_dot = () => {

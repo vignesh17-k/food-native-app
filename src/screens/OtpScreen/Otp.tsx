@@ -18,6 +18,7 @@ import { supabase } from "../../../supabase.config";
 import Button from "../../components/Button";
 import { setLogin } from "../../../store/slices/LoginSlice";
 import { useDispatch } from "react-redux";
+import constants from "../../../utils/constants";
 
 function Otp({ navigation }) {
   const [user_data, set_user_data] = useState<any>({});
@@ -62,7 +63,7 @@ function Otp({ navigation }) {
     set_loading(false);
     navigation.reset({
       index: 0,
-      routes: [{ name: "home" }],
+      routes: [{ name: constants.RouteNames?.MainApp  }],
     });
   };
 

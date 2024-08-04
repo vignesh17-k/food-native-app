@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "../../../store/slices/LoginSlice";
 import LogoHeader from "../../components/LogoHeader";
 import utils from "../../../utils/utils";
+import constants from "../../../utils/constants";
 
 function ResetPassword() {
   const [loading, set_loading] = useState(false);
@@ -27,7 +28,7 @@ function ResetPassword() {
     set_loading(false);
     navigation.reset({
       index: 0,
-      routes: [{ name: "home" }],
+      routes: [{ name: constants.RouteNames?.MainApp  }],
     });
   };
 

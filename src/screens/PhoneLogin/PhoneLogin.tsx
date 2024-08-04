@@ -10,6 +10,7 @@ import { supabase } from "../../../supabase.config";
 import { useToast } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import utils from "../../../utils/utils";
+import constants from "../../../utils/constants";
 
 const PhoneLogin = () => {
   const { control, handleSubmit, setValue } = useForm();
@@ -52,7 +53,7 @@ const PhoneLogin = () => {
       "user_data",
       JSON.stringify({ phone_number: phone_number })
     );
-    navigate.navigate("otpScreen");
+    navigate.navigate(constants.RouteNames.OtpLogin);
   };
 
   return (
