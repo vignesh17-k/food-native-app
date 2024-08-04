@@ -1,3 +1,5 @@
+import { icons } from "../constants"
+
 const constants = {
 
     RouteNames: {
@@ -7,29 +9,35 @@ const constants = {
         ResetPassword: "resetPassword",
         PhoneLogin: "phoneLogin",
         OtpLogin: "otpScreen",
-        MainApp: "mainApp"
+        MainApp: "mainApp",
+        Home:"home"
     },
 
     bottomTabs: [
         {
             id: 0,
             label: "Home",
+            icon: icons.home
         },
         {
             id: 1,
             label: "Search",
+            icon: icons.search
         },
         {
             id: 2,
             label: "Cart",
+            icon: icons.cart
         },
         {
             id: 3,
             label: "Favourite",
+            icon: icons.favourite
         },
         {
             id: 4,
             label: "Notification",
+            icon: icons.notification
         },
     ]
 
