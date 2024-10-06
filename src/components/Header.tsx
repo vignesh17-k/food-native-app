@@ -1,11 +1,24 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-function Header({ container_style, left_section, right_section, title }) {
+interface Props {
+  container_style?: any;
+  left_section?: any;
+  right_section?: any;
+  title: any;
+}
+
+const Header = ({
+  container_style,
+  left_section,
+  right_section,
+  title,
+}: Props) => {
   return (
     <View
       style={{
         flexDirection: "row",
+        alignItems:'center',
         ...container_style,
       }}
     >
@@ -14,6 +27,7 @@ function Header({ container_style, left_section, right_section, title }) {
         style={{
           alignItems: "center",
           justifyContent: "center",
+          flex: 1,
         }}
       >
         <Text>{title}</Text>
@@ -21,6 +35,6 @@ function Header({ container_style, left_section, right_section, title }) {
       {right_section}
     </View>
   );
-}
+};
 
 export default Header;

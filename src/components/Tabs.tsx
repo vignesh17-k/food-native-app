@@ -11,7 +11,8 @@ import {
 import constants from "../../utils/constants";
 import _ from "lodash";
 import Home from "../screens/Home/Home";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { SIZES } from "../../constants";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,45 +28,52 @@ const TabView = () => {
     }).start();
   }, [active_tab]);
 
+  const handle_navigate = (id: number) => {
+    set_active_tab(id);
+  };
+
+  const handle_render_tabs = (tab: any, index: number) => {
+    const is_active = active_tab === tab?.id;
+
+    const scale = animated_value.interpolate({
+      inputRange: [index - 1, index, index + 1],
+      outputRange: [1, 1.1, 1],
+      extrapolate: "clamp",
+    });
+    const backgroundColor = is_active ? "rgb(237,117,80)" : "transparent";
+
+    return (
+      <TouchableOpacity onPress={() => handle_navigate(tab?.id)} key={tab?.id}>
+        <Animated.View
+          style={[
+            is_active ? styles?.active_tab_item : styles?.tab_item,
+            {
+              backgroundColor,
+              transform: [{ scale }],
+            },
+          ]}
+        >
+          <Image
+            source={tab?.icon}
+            style={{
+              ...styles.icon_style,
+              tintColor: is_active ? "white" : "grey",
+            }}
+          />
+          {is_active && <Text style={styles.text_style}>{tab?.label}</Text>}
+        </Animated.View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{ backgroundColor: "white" }}>
       <View style={styles.tab_container}>
         {_.map(constants.bottomTabs, (tab, index) => {
-          const is_active = active_tab === tab?.id;
-
-          const scale = animated_value.interpolate({
-            inputRange: [index - 1, index, index + 1],
-            outputRange: [1, 1.1, 1],
-            extrapolate: "clamp",
-          });
-          const backgroundColor = is_active ? "rgb(237,117,80)" : "transparent";
-
           return (
-            <TouchableOpacity
-              onPress={() => set_active_tab(tab?.id)}
-              key={tab?.id}
-            >
-              <Animated.View
-                style={[
-                  is_active ? styles?.active_tab_item : styles?.tab_item,
-                  {
-                    backgroundColor,
-                    transform: [{ scale  }],
-                  },
-                ]}
-              >
-                <Image
-                  source={tab?.icon}
-                  style={{
-                    ...styles.icon_style,
-                    tintColor: is_active ? "white" : "grey",
-                  }}
-                />
-                {is_active && (
-                  <Text style={styles.text_style}>{tab?.label}</Text>
-                )}
-              </Animated.View>
-            </TouchableOpacity>
+            <React.Fragment key={tab?.id}>
+              {handle_render_tabs(tab, index)}
+            </React.Fragment>
           );
         })}
       </View>
@@ -88,17 +96,24 @@ const TabBar = () => {
 export default TabBar;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
-    borderRadius: 20,
-  },
   tab_container: {
     flexDirection: "row",
-    paddingTop: 20,
+    height: SIZES.height * 0.1,
     paddingHorizontal: 20,
     justifyContent: "space-evenly",
     alignItems: "center",
     gap: 15,
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: {
+      width: 0,
+      height: -15,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
+    backgroundColor: "white",
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
   },
   tab_item: {
     gap: 10,
@@ -119,7 +134,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   text_style: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "700",
     color: "white",
   },

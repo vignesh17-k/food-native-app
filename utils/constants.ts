@@ -17,12 +17,12 @@ const constants = {
         {
             id: 0,
             label: "Home",
-            icon: icons.home
+            icon: icons.home,
         },
         {
             id: 1,
             label: "Search",
-            icon: icons.search
+            icon: icons.search,
         },
         {
             id: 2,
