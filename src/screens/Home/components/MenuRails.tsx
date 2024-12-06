@@ -1,32 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   FlatList,
-  Image,
   TouchableOpacity,
+  Image,
   StyleSheet,
 } from "react-native";
+import constants from "../../../../constants/dummyData";
 import ImageLinks from "../../../../assets/ImageLink";
 import { SIZES } from "../../../../constants";
-import constants from "../../../../constants/dummyData";
-import { FontAwesome } from "@expo/vector-icons";
 
-const PopularRails = () => {
-  const [popular_rails, set_popular_rails] = useState([]);
+const MenuRails = () => {
+  const [selected_menu, set_selected_menu] = useState(constants?.menu[0]);
 
-  useEffect(() => {
-    set_popular_rails(constants.popular_rails);
-  }, []);
-
-  const handle_favorite = (id: any, value) => {
-    const data = popular_rails?.map((item) =>
-      item?.id === id ? { ...item, isFavorite: value } : { ...item }
+  const render_menu_tabs = ({ item }) => {
+    return (
+      <TouchableOpacity onPress={() => set_selected_menu(item)}>
+        <Text
+          style={{
+            color: item.id === selected_menu?.id ? "#FF6D00" : "#000",
+            fontWeight: "bold",
+            fontSize: 18,
+          }}
+        >
+          {item.name}
+        </Text>
+      </TouchableOpacity>
     );
-    set_popular_rails(data);
   };
 
-  const render_cards = (item: any) => {
+  const render_cards = ({ item }) => {
     return (
       <TouchableOpacity style={styles.card_container}>
         <View
@@ -45,16 +49,6 @@ const PopularRails = () => {
             <Image source={ImageLinks.calories} style={styles.icon_style} />
             <Text style={styles.calories}>{item?.calories} Calories</Text>
           </View>
-
-          <TouchableOpacity
-            onPress={() => handle_favorite(item?.id, !item?.isFavorite)}
-          >
-            <FontAwesome
-              name={item?.isFavorite ? "heart" : "heart-o"}
-              size={20}
-              color={item?.isFavorite ? "#ff6e4d" : "grey"}
-            />
-          </TouchableOpacity>
         </View>
 
         <Image source={item?.image} style={styles.card_image} />
@@ -69,42 +63,36 @@ const PopularRails = () => {
   };
 
   return (
-    <React.Fragment>
-      <View style={styles.title_container}>
-        <Text
-          style={{
-            fontWeight: "700",
-            fontSize: 18,
-          }}
-        >
-          Popular Near You
-        </Text>
-        <Text
-          style={{
-            fontSize: 18,
-            color: "#ed7550",
-          }}
-        >
-          Show All
-        </Text>
-      </View>
+    <View style={styles.container}>
       <FlatList
-        data={popular_rails}
         horizontal
-        keyExtractor={(item: any) => item?.id}
-        renderItem={({ item }) => render_cards(item)}
+        data={constants?.menu}
+        renderItem={render_menu_tabs}
+        keyExtractor={(item) => item?.id?.toString()}
+        contentContainerStyle={styles.menu_list}
+        showsHorizontalScrollIndicator={false}
+        nestedScrollEnabled={true}
+      />
+
+      <FlatList
+        data={selected_menu?.list}
+        renderItem={render_cards}
+        keyExtractor={(item) => item?.id?.toString()}
         contentContainerStyle={styles.popular_rail}
         showsHorizontalScrollIndicator={false}
+        nestedScrollEnabled={true}
       />
-    </React.Fragment>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  title_container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom:20,
+  container: {
+    flex: 1,
+  },
+  menu_list: {
+    gap: 24,
+    marginBottom: 25,
   },
   popular_rail: {
     gap: 20,
@@ -114,6 +102,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     minWidth: 220,
+    marginBottom:20
   },
   card_image: {
     width: "100%",
@@ -150,4 +139,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PopularRails;
+export default MenuRails;

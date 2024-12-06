@@ -1,29 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  View,
   Text,
   FlatList,
   TouchableOpacity,
   StyleSheet,
   Image,
 } from "react-native";
-import ImageLinks from "../../../../assets/ImageLink";
-
-const categories = [
-  { id: "1", name: "Fast Food", icon: ImageLinks.burger },
-  { id: "2", name: "Fruit Item", icon: ImageLinks.cherry },
-];
+import constants from "../../../../constants/dummyData";
+import _ from "lodash";
 
 const CategoryRail = () => {
+  const [active_category, set_active_category] = useState(_.head(constants?.categories)?.id);
+
   return (
     <FlatList
-      data={categories}
+      data={constants.categories}
       horizontal
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <TouchableOpacity style={styles.categoryContainer}>
+        <TouchableOpacity
+          onPress={() => set_active_category(item?.id)}
+          style={[
+            styles.categoryContainer,
+            item.id === active_category && styles.activeCategoryContainer,
+          ]}
+        >
           <Image source={item.icon} style={styles.categoryIcon} />
-          <Text style={styles.categoryText}>{item.name}</Text>
+          <Text  style={[styles.categoryText,    item.id === active_category && styles.activeCategoryText,]}>{item.name}</Text>
         </TouchableOpacity>
       )}
       contentContainerStyle={styles.categoryRail}
@@ -35,6 +38,12 @@ const CategoryRail = () => {
 const styles = StyleSheet.create({
   categoryRail: {
     gap: 20,
+  },
+  activeCategoryContainer: {
+    backgroundColor: "#ed7550",
+  },
+  activeCategoryText:{
+   color:'white'
   },
   categoryContainer: {
     alignItems: "center",

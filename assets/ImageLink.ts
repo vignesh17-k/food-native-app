@@ -12,8 +12,8 @@ import search from './icons/search.png';
 import profile from './images/profile.png';
 import burger from './icons/burger.png';
 import cherry from './icons/cherry.png';
-import burger_menu from './images/burger_menu.png';
-import tacos_menu from './images/tacos_menu.png';
+import burger_menu from './dummyData/hamburger.png';
+import tacos_menu from './dummyData/hot_tacos.png';
 import calories from './icons/calories.png';
 
 const ImageLinks = {

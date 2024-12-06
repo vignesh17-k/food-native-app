@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   primaryButton: {
-    backgroundColor: "rgb(237,117,80)",
+    backgroundColor: "#ed7550",
     padding: SIZES.height * 0.015,
     borderRadius: 10,
   },
