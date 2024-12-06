@@ -14,9 +14,9 @@ import constants from "../../../../utils/constants";
 function OnBoardingArea() {
   const [tab, set_tab] = useState(0);
 
-  const scroll_x:any = useRef(new Animated.Value(0)).current;
-  const flat_list_ref:any = useRef(FlatList);
-  const navigate:any = useNavigation();
+  const scroll_x: any = useRef(new Animated.Value(0)).current;
+  const flat_list_ref: any = useRef(FlatList);
+  const navigate: any = useNavigation();
   const data = ON_BOARDING_CONTANTS?.data;
 
   // eslint-disable-next-line no-unused-vars
@@ -111,7 +111,7 @@ function OnBoardingArea() {
           [{ nativeEvent: { contentOffset: { x: scroll_x } } }],
           { useNativeDriver: false }
         )}
-        keyExtractor={(item:any) => item?.id}
+        keyExtractor={(item: any) => item?.id}
         renderItem={({ item, index }) => {
           return (
             <OnBoardingCard
@@ -128,17 +128,19 @@ function OnBoardingArea() {
       {render_dot()}
       <SafeAreaView
         style={{
-          marginVertical: Platform.OS === "android" && 20 ,
+          marginVertical: Platform.OS === "android" && 20,
         }}
       >
         <View style={styles.footerButton}>
           {tab === data.length - 1 && (
-            <Button
-              text="Let's Get Started"
-              type="primary"
-              width={SIZES.width * 0.8}
-              onClick={handle_next_tab}
-            />
+            <React.Fragment>
+              <Button
+                text="Let's Get Started"
+                type="primary"
+                width={SIZES.width * 0.8}
+                onClick={handle_next_tab}
+              />
+            </React.Fragment>
           )}
           {tab < data.length - 1 && (
             <React.Fragment>
@@ -175,6 +177,7 @@ const styles = StyleSheet.create({
   footerButton: {
     flexDirection: "row",
     justifyContent: "space-evenly",
+    alignItems:'center'
   },
   scrollContainer: {
     width: SIZES.width,

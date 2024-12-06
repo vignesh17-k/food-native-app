@@ -55,10 +55,9 @@ const Button = ({ text, type, width, onClick, loading, style }: Props) => {
 const styles = StyleSheet.create({
   secondaryButton: {
     borderRadius: 10,
-    padding: SIZES.height * 0.02,
   },
   primaryButton: {
-    backgroundColor: "rgb(237,117,80)",
+    backgroundColor: "#ed7550",
     padding: SIZES.height * 0.015,
     borderRadius: 10,
   },

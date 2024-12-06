@@ -10,19 +10,19 @@ const constants = {
         PhoneLogin: "phoneLogin",
         OtpLogin: "otpScreen",
         MainApp: "mainApp",
-        Home:"home"
+        Home: "home"
     },
 
     bottomTabs: [
         {
             id: 0,
             label: "Home",
-            icon: icons.home
+            icon: icons.home,
         },
         {
             id: 1,
             label: "Search",
-            icon: icons.search
+            icon: icons.search,
         },
         {
             id: 2,
@@ -39,6 +39,34 @@ const constants = {
             label: "Notification",
             icon: icons.notification
         },
+    ],
+
+    sections: [
+        { section: "delivery", data: [] },
+        { section: "category", data: [] },
+        { section: "popular", data: [] },
+        // { section: "recommended", data: [] },
+        { section: "menu", data: [] },
+    ],
+
+
+    rails: [
+        {
+            id: 1,
+            section: "category",
+        },
+        {
+            id: 2,
+            section: "popular",
+        },
+        // {
+        //   id:3, 
+        //     section: "recommended",
+        // },
+        {
+            id: 4,
+            section: 'menu'
+        }
     ]
 
 

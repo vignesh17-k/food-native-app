@@ -128,11 +128,12 @@ const tags = [
     }
 ]
 
+
 export default {
     onboarding_screens,
     screens,
     bottom_tabs,
     delivery_time,
     ratings,
-    tags
+    tags,
 }

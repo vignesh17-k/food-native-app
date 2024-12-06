@@ -4,7 +4,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useToast } from "native-base";
 import * as QueryParams from "expo-auth-session/build/QueryParams";
 import { supabase } from "../../supabase.config";
-import constants from "../../utils/constants";
 
 const DeepLinkHandler = () => {
   const navigation: any = useNavigation();
@@ -67,14 +66,14 @@ const DeepLinkHandler = () => {
             backgroundColor: "red.800",
           });
         });
-      linking.addEventListener("url", handle_open_url);
+      linking?.addEventListener("url", handle_open_url);
     } else {
-      linking.addEventListener("url", handle_open_url);
+      linking?.addEventListener("url", handle_open_url);
     }
 
     return () => {
       // Clean up event listeners
-      linking.removeEventListener("url", handle_open_url);
+      linking?.removeEventListener("url", handle_open_url);
     };
   }, []);
 
