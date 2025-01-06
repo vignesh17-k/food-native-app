@@ -36,7 +36,7 @@ function OnBoardingArea() {
   };
 
   const handle_skip = () => {
-    navigate.navigate(constants.RouteNames.Login);
+    navigate.navigate(constants.route_names.Login);
   };
 
   const render_dot = () => {

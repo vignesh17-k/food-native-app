@@ -15,6 +15,8 @@ import cherry from './icons/cherry.png';
 import burger_menu from './dummyData/hamburger.png';
 import tacos_menu from './dummyData/hot_tacos.png';
 import calories from './icons/calories.png';
+import cross from './icons/cross.png';
+import cart from './icons/cart.png';
 
 const ImageLinks = {
     google_icon,
@@ -33,7 +35,9 @@ const ImageLinks = {
     cherry,
     burger_menu,
     tacos_menu,
-    calories
+    calories,
+    cross,
+    cart
 };
 
 export default ImageLinks;

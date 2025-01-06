@@ -43,7 +43,7 @@ const loginInputFieldContainer = ({ navigation }) => {
     set_loading(false);
     navigation.reset({
       index: 0,
-      routes: [{ name: constants.RouteNames?.MainApp }],
+      routes: [{ name: constants.route_names?.MainApp }],
     });
   };
 
@@ -156,7 +156,7 @@ const loginInputFieldContainer = ({ navigation }) => {
       >
         <Text
           style={styles.forgot_password_style}
-          onPress={() => navigate.navigate(constants.RouteNames.ForgotPassword)}
+          onPress={() => navigate.navigate(constants.route_names.ForgotPassword)}
         >
           Forgot Password?
         </Text>

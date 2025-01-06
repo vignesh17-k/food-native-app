@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
-  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LogoHeader from "../../components/LogoHeader";
@@ -63,11 +62,12 @@ function Otp({ navigation }) {
     set_loading(false);
     navigation.reset({
       index: 0,
-      routes: [{ name: constants.RouteNames?.MainApp  }],
+      routes: [{ name: constants.route_names?.MainApp  }],
     });
   };
 
   const handle_verify_otp = async () => {
+    set_loading(true);
     const {
       data: { session },
       error,
@@ -83,6 +83,7 @@ function Otp({ navigation }) {
         placement: "top",
         backgroundColor: "red.800",
       });
+      set_loading(false);
       return;
     }
     handle_navigation();
@@ -131,18 +132,16 @@ function Otp({ navigation }) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={0}
       >
-        <ScrollView
-          contentContainerStyle={styles.content_container}
-          keyboardShouldPersistTaps="handled"
-        >
           <View style={styles.container}>
             <OtpInput
               numberOfDigits={4}
-              focusColor={"#ff6d4d"}
+              focusColor={"#ff63d4d"}
               onTextChange={(text) => handle_otp(text)}
               focusStickBlinkingDuration={400}
-              pinCodeContainerStyle={styles.pin_code_container}
-              containerStyle={styles.opt_container}
+              theme={{
+                containerStyle:styles.opt_container,
+                pinCodeContainerStyle:styles.pin_code_container
+              }}
             />
             <TouchableOpacity onPress={handle_resend_code}>
               <View style={styles.resent_opt}>
@@ -157,7 +156,6 @@ function Otp({ navigation }) {
               </View>
             </TouchableOpacity>
           </View>
-        </ScrollView>
         <View
           style={{
             alignItems: "center",

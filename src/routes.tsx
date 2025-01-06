@@ -14,30 +14,30 @@ const Stack = createNativeStackNavigator();
 
 const Routes = () => {
   const user_data = useSelector((state: any) => state?.user?.session);
-  const { RouteNames } = constants;
+  const { route_names } = constants;
 
   return (
     <Stack.Navigator
       initialRouteName={
-        user_data?.session ? RouteNames.MainApp : RouteNames?.PreLogin
+        user_data?.session ? route_names.MainApp : route_names?.PreLogin
       }
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name={RouteNames?.PreLogin} component={OnBoarding} />
+      <Stack.Screen name={route_names?.PreLogin} component={OnBoarding} />
       <Stack.Screen
-        name={RouteNames?.ForgotPassword}
+        name={route_names?.ForgotPassword}
         component={ForgotPassword}
       />
-      <Stack.Screen name={RouteNames?.Login} component={Login} />
+      <Stack.Screen name={route_names?.Login} component={Login} />
       <Stack.Screen
-        name={RouteNames?.ResetPassword}
+        name={route_names?.ResetPassword}
         component={ResetPassword}
       />
-      <Stack.Screen name={RouteNames?.PhoneLogin} component={PhoneLogin} />
-      <Stack.Screen name={RouteNames?.OtpLogin} component={Otp} />
-      <Stack.Screen name={RouteNames?.MainApp} component={TabBar} />
+      <Stack.Screen name={route_names?.PhoneLogin} component={PhoneLogin} />
+      <Stack.Screen name={route_names?.OtpLogin} component={Otp} />
+      <Stack.Screen name={route_names?.MainApp} component={TabBar} />
     </Stack.Navigator>
   );
 };
