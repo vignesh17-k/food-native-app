@@ -9,31 +9,55 @@ import {
   Animated,
 } from "react-native";
 import constants from "../../utils/constants";
-import _ from "lodash";
-import Home from "../screens/Home/Home";
+import { find, head, isEmpty, map } from "lodash";
 import React, { useEffect, useRef, useState } from "react";
 import { SIZES } from "../../constants";
+import Home from "../screens/Home/Home";
+import Search from "../screens/Search/Search";
+import Cart from "../screens/Cart/Cart"
+import Notifications from "../screens/Notifications/Notification"
+import Wishlist from "../screens/Wishlist/Wishlist"
+import { useNavigation, useNavigationState } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
 
 const TabView = () => {
-  const [active_tab, set_active_tab] = useState(0);
+  const tab_navigation_state: any = useNavigationState((state) => state);
+  const navigation: any = useNavigation();
+  const [active_tab, set_active_tab] = useState<any>(
+    head(constants.bottom_tabs)
+  );
   const animated_value = useRef(new Animated.Value(0))?.current;
 
   useEffect(() => {
     Animated.timing(animated_value, {
-      toValue: active_tab,
+      toValue: active_tab?.id,
       duration: 300,
       useNativeDriver: false,
     }).start();
-  }, [active_tab]);
+  }, [active_tab?.id]);
 
-  const handle_navigate = (id: number) => {
-    set_active_tab(id);
+  useEffect(() => {
+    const active_route =
+      tab_navigation_state?.routes[tab_navigation_state?.index]?.state
+        ?.routes?.[
+        tab_navigation_state?.routes[tab_navigation_state?.index]?.state?.index
+      ];
+    const new_active_tab = find(constants.bottom_tabs, {
+      route: active_route?.name,
+    });
+    if (!isEmpty(new_active_tab)) {
+      set_active_tab(new_active_tab);
+    }
+  }, [tab_navigation_state]);
+
+  const handle_navigate = (tab: any) => {
+    navigation.navigate(tab.route);
+    set_active_tab(tab);
   };
 
   const handle_render_tabs = (tab: any, index: number) => {
-    const is_active = active_tab === tab?.id;
+    const is_active = active_tab?.id === tab?.id;
 
     const scale = animated_value.interpolate({
       inputRange: [index - 1, index, index + 1],
@@ -43,7 +67,7 @@ const TabView = () => {
     const backgroundColor = is_active ? "rgb(237,117,80)" : "transparent";
 
     return (
-      <TouchableOpacity onPress={() => handle_navigate(tab?.id)} key={tab?.id}>
+      <TouchableOpacity onPress={() => handle_navigate(tab)} key={tab?.id}>
         <Animated.View
           style={[
             is_active ? styles?.active_tab_item : styles?.tab_item,
@@ -69,7 +93,7 @@ const TabView = () => {
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
       <View style={styles.tab_container}>
-        {_.map(constants.bottomTabs, (tab, index) => {
+        {map(constants.bottom_tabs, (tab, index) => {
           return (
             <React.Fragment key={tab?.id}>
               {handle_render_tabs(tab, index)}
@@ -84,11 +108,17 @@ const TabView = () => {
 const TabBar = () => {
   return (
     <Tab.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName={constants.RouteNames.Home}
+      screenOptions={{
+        headerShown: false
+      }}
+      initialRouteName={constants.route_names.Home}
       tabBar={() => <TabView />}
     >
       <Tab.Screen name="home" component={Home} />
+      <Tab.Screen name="search" component={Search} />
+      <Tab.Screen name="cart" component={Cart} />
+      <Tab.Screen name="wishlist" component={Wishlist} />
+      <Tab.Screen name="notifications" component={Notifications} />
     </Tab.Navigator>
   );
 };

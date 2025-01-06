@@ -7,12 +7,16 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import constants from "../../../../constants/dummyData";
 import ImageLinks from "../../../../assets/ImageLink";
 import { SIZES } from "../../../../constants";
+import { FontAwesome } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { head } from "lodash";
+import { update_section_data } from "../../../../store/slices/HomeSlice";
 
-const MenuRails = () => {
-  const [selected_menu, set_selected_menu] = useState(constants?.menu[0]);
+const MenuRails = ({ rail_data }: any) => {
+  const [selected_menu, set_selected_menu] = useState<any>(head(rail_data));
+  const dispatch = useDispatch();
 
   const render_menu_tabs = ({ item }) => {
     return (
@@ -28,6 +32,19 @@ const MenuRails = () => {
         </Text>
       </TouchableOpacity>
     );
+  };
+
+  const handle_favorite = (id: any, value: boolean) => {
+    const data: any = selected_menu?.list?.map((item: any) =>
+      item?.id === id ? { ...item, isFavorite: value } : { ...item }
+    );
+
+    const update_rails_data = rail_data?.map((item:any) =>
+      item?.id === selected_menu?.id ? { ...item, list: data } : { ...item }
+    );
+
+    dispatch(update_section_data({ section_name: "menu", section_data: update_rails_data }));
+    set_selected_menu((prev: any) => ({ ...prev, list: data }));
   };
 
   const render_cards = ({ item }) => {
@@ -49,9 +66,22 @@ const MenuRails = () => {
             <Image source={ImageLinks.calories} style={styles.icon_style} />
             <Text style={styles.calories}>{item?.calories} Calories</Text>
           </View>
+
+          <TouchableOpacity
+            onPress={() => handle_favorite(item?.id, !item?.isFavorite)}
+          >
+            <FontAwesome
+              name={item?.isFavorite ? "heart" : "heart-o"}
+              size={20}
+              color={item?.isFavorite ? "#ff6e4d" : "grey"}
+            />
+          </TouchableOpacity>
         </View>
 
-        <Image source={item?.image} style={styles.card_image} />
+        <Image
+          source={item?.image}
+          style={item?.style ? item?.style : styles.card_image}
+        />
 
         <View style={styles.card_content}>
           <Text style={styles.card_title}>{item?.name}</Text>
@@ -66,7 +96,7 @@ const MenuRails = () => {
     <View style={styles.container}>
       <FlatList
         horizontal
-        data={constants?.menu}
+        data={rail_data}
         renderItem={render_menu_tabs}
         keyExtractor={(item) => item?.id?.toString()}
         contentContainerStyle={styles.menu_list}
@@ -102,7 +132,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     minWidth: 220,
-    marginBottom:20
+    marginBottom: 20,
   },
   card_image: {
     width: "100%",
@@ -126,6 +156,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 20,
     color: "#888",
+    textAlign: "center",
   },
   card_price: {
     fontSize: 20,

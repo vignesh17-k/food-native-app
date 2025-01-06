@@ -53,7 +53,7 @@ const PhoneLogin = () => {
       "user_data",
       JSON.stringify({ phone_number: phone_number })
     );
-    navigate.navigate(constants.RouteNames.OtpLogin);
+    navigate.navigate(constants.route_names.OtpLogin);
   };
 
   return (

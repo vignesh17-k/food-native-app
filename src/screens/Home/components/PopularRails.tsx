@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -9,21 +9,23 @@ import {
 } from "react-native";
 import ImageLinks from "../../../../assets/ImageLink";
 import { SIZES } from "../../../../constants";
-import constants from "../../../../constants/dummyData";
 import { FontAwesome } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { update_section_data } from "../../../../store/slices/HomeSlice";
 
-const PopularRails = () => {
-  const [popular_rails, set_popular_rails] = useState([]);
+const PopularRails = ({ rail_data }: any) => {
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    set_popular_rails(constants.popular_rails);
-  }, []);
+  const _rail_data = rail_data?.slice(0, 10);
 
-  const handle_favorite = (id: any, value) => {
-    const data = popular_rails?.map((item) =>
+
+  const handle_favorite = (id: any, value: boolean) => {
+    const data = _rail_data?.map((item:any) =>
       item?.id === id ? { ...item, isFavorite: value } : { ...item }
     );
-    set_popular_rails(data);
+    dispatch(
+      update_section_data({ section_name: "popular", section_data: data })
+    );
   };
 
   const render_cards = (item: any) => {
@@ -57,7 +59,10 @@ const PopularRails = () => {
           </TouchableOpacity>
         </View>
 
-        <Image source={item?.image} style={styles.card_image} />
+        <Image
+          source={item?.image}
+          style={item?.style ? item?.style : styles.card_image}
+        />
 
         <View style={styles.card_content}>
           <Text style={styles.card_title}>{item?.name}</Text>
@@ -89,7 +94,7 @@ const PopularRails = () => {
         </Text>
       </View>
       <FlatList
-        data={popular_rails}
+        data={_rail_data}
         horizontal
         keyExtractor={(item: any) => item?.id}
         renderItem={({ item }) => render_cards(item)}
@@ -104,7 +109,7 @@ const styles = StyleSheet.create({
   title_container: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom:20,
+    marginBottom: 20,
   },
   popular_rail: {
     gap: 20,
@@ -113,7 +118,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#f7f8fa",
     borderRadius: 20,
     padding: 20,
-    minWidth: 220,
+    maxWidth: 220,
+    justifyContent: "space-between",
   },
   card_image: {
     width: "100%",
@@ -132,11 +138,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700",
     marginBottom: 5,
+    textAlign: "center",
   },
   card_description: {
     fontSize: 14,
     marginBottom: 20,
     color: "#888",
+    textAlign: "center",
+    minHeight: 30,
   },
   card_price: {
     fontSize: 20,

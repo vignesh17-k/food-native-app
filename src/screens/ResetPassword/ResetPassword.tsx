@@ -28,7 +28,7 @@ function ResetPassword() {
     set_loading(false);
     navigation.reset({
       index: 0,
-      routes: [{ name: constants.RouteNames?.MainApp  }],
+      routes: [{ name: constants.route_names?.MainApp  }],
     });
   };
 

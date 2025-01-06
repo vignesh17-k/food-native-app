@@ -9,7 +9,7 @@ interface Props {
   text: string;
   type: any;
   width?: any;
-  onClick: () => any;
+  onClick?: () => any;
   loading?: boolean;
   style?: any;
 }

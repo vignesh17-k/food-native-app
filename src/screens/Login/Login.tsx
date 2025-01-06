@@ -91,7 +91,7 @@ const Login = ({ navigation }) => {
         </KeyboardAvoidingView>
 
         {login_type === "login" && (
-          <TouchableOpacity onPress={() => navigate.navigate(constants.RouteNames.PhoneLogin)}>
+          <TouchableOpacity onPress={() => navigate.navigate(constants.route_names.PhoneLogin)}>
             <View style={styles.phoneLogin}>
               <Text color="white">Login With Phone Number</Text>
             </View>

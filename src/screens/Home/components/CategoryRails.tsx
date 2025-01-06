@@ -6,15 +6,14 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-import constants from "../../../../constants/dummyData";
 import _ from "lodash";
 
-const CategoryRail = () => {
-  const [active_category, set_active_category] = useState(_.head(constants?.categories)?.id);
+const CategoryRail = ({rail_data}:any) => {
+  const [active_category, set_active_category] = useState();
 
   return (
     <FlatList
-      data={constants.categories}
+      data={rail_data}
       horizontal
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
@@ -25,8 +24,18 @@ const CategoryRail = () => {
             item.id === active_category && styles.activeCategoryContainer,
           ]}
         >
-          <Image source={item.icon} style={styles.categoryIcon} />
-          <Text  style={[styles.categoryText,    item.id === active_category && styles.activeCategoryText,]}>{item.name}</Text>
+          <Image
+            source={item.icon}
+            style={item?.style ? item?.style : styles.categoryIcon}
+          />
+          <Text
+            style={[
+              styles.categoryText,
+              item.id === active_category && styles.activeCategoryText,
+            ]}
+          >
+            {item.name}
+          </Text>
         </TouchableOpacity>
       )}
       contentContainerStyle={styles.categoryRail}
@@ -42,13 +51,14 @@ const styles = StyleSheet.create({
   activeCategoryContainer: {
     backgroundColor: "#ed7550",
   },
-  activeCategoryText:{
-   color:'white'
+  activeCategoryText: {
+    color: "white",
   },
   categoryContainer: {
     alignItems: "center",
     flexDirection: "row",
     paddingVertical: 6,
+    gap: 4,
     paddingHorizontal: 10,
     backgroundColor: "#f7f8fa",
     borderRadius: 15,

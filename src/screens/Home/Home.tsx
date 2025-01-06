@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Pressable,
   Text,
@@ -12,7 +12,7 @@ import Header from "../../components/Header";
 import { SIZES } from "../../../constants";
 import ImageLinks from "../../../assets/ImageLink";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CategoryRail from "./components/CategoryRails";
 import PopularRails from "./components/PopularRails";
 import RecommendedRails from "./components/RecommendedRails";
@@ -23,8 +23,12 @@ import { useToast } from "native-base";
 import { supabase } from "../../../supabase.config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setLogin } from "../../../store/slices/LoginSlice";
+import { set_section_data } from "../../../store/slices/HomeSlice";
+import mock_data from "../../../constants/dummyData";
+import { store } from "../../../store/store";
 
 const Home = ({ navigation }) => {
+  const section_data = useSelector((state: any) => state?.home?.section_data);
   const navigate: any = useNavigation();
   const dispatch = useDispatch();
   const toast = useToast();
@@ -59,10 +63,11 @@ const Home = ({ navigation }) => {
 
     AsyncStorage.clear();
     dispatch(setLogin(false));
-    navigate.navigate(constants.RouteNames.Login);
+    navigate.navigate(constants.route_names.Login);
+    store.dispatch({ type: "USER_LOGOUT" });
     navigation.reset({
       index: 0,
-      routes: [{ name: constants.RouteNames.Login }],
+      routes: [{ name: constants.route_names.Login }],
     });
   };
 
@@ -114,18 +119,24 @@ const Home = ({ navigation }) => {
     );
   };
 
+  const handle_click = () => {
+    navigate.navigate(constants.route_names.Search);
+  };
+
   const handle_render_search = () => {
     return (
-      <View style={styles.search_container}>
-        <Image
-          source={ImageLinks.search}
-          alt="search"
-          style={{ height: 25, width: 25, tintColor: "black" }}
-        />
-        <Pressable>
-          <Text style={styles.placeholder_text}>{"search food..."}</Text>
-        </Pressable>
-      </View>
+      <TouchableOpacity onPress={handle_click}>
+        <View style={styles.search_container}>
+          <Image
+            source={ImageLinks.search}
+            alt="search"
+            style={{ height: 25, width: 25, tintColor: "black" }}
+          />
+          <Pressable>
+            <Text style={styles.placeholder_text}>{"search food..."}</Text>
+          </Pressable>
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -139,7 +150,7 @@ const Home = ({ navigation }) => {
             ellipsizeMode="tail"
             style={styles.deliver_address}
           >
-            No. 88, Jln Padungan, Kuching
+            {mock_data?.my_profile?.address}
           </Text>
           <Image source={ImageLinks?.down_arrow} style={styles.icon_style} />
         </View>
@@ -152,24 +163,25 @@ const Home = ({ navigation }) => {
       case "delivery":
         return handle_render_deliver_section();
       case "category":
-        return <CategoryRail />;
+        return <CategoryRail rail_data={item?.data} />;
       case "popular":
-        return <PopularRails />;
+        return <PopularRails rail_data={item?.data} />;
       case "recommended":
         return <RecommendedRails />;
       case "menu":
-        return <MenuRails />;
+        return <MenuRails rail_data={item?.data} />;
       default:
         return null;
     }
   };
 
+  useEffect(() => {
+    dispatch(set_section_data(constants.sections));
+  }, []);
+
+
   return (
-    <View
-      style={{
-        backgroundColor: "#fff",
-      }}
-    >
+    <View style={{ backgroundColor: "#fff" }}>
       <Animated.View
         style={[
           styles.header,
@@ -180,7 +192,7 @@ const Home = ({ navigation }) => {
         {handle_render_search()}
       </Animated.View>
       <Animated.FlatList
-        data={constants?.sections}
+        data={section_data}
         renderItem={render_section}
         keyExtractor={(item) => item?.section}
         contentContainerStyle={styles?.content}

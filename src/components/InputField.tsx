@@ -7,7 +7,7 @@ import apply_validations from "../../utils/rules";
 interface Props {
   style?: any;
   name: string;
-  validations: any;
+  validations?: any;
   label: string;
   control: any;
   placeholder?: string;
